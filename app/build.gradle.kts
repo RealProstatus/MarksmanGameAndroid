@@ -44,3 +44,18 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
 }
+
+// Создаем задачу копирования
+val syncProtocol by tasks.registering(Copy::class) {
+    // Откуда берем файлы (относительно папки app/)
+    from("../../src/main/java/org/example/marksmangame/net/protocol")
+    // Куда кладем в Android проекте
+    into("src/main/java/org/example/marksmangame/net/protocol")
+}
+
+// Указываем, что эта задача должна выполняться ДО начала сборки Android
+afterEvaluate {
+    tasks.named("preBuild") {
+        dependsOn(syncProtocol)
+    }
+}
