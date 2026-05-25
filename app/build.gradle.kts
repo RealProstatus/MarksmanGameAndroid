@@ -30,8 +30,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
     implementation(libs.material)
+    implementation(libs.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
@@ -47,13 +48,17 @@ dependencies {
 
 // Создаем задачу копирования
 val syncProtocol by tasks.registering(Copy::class) {
-    // Откуда берем файлы (относительно папки app/)
-    from("../../src/main/java/org/example/marksmangame/net/protocol")
-    // Куда кладем в Android проекте
-    into("src/main/java/org/example/marksmangame/net/protocol")
+    // Берем за основу корень исходников сервера
+    from("../../src/main/java")
+
+    // Указываем, какие именно файлы и папки нам нужны:
+    include("org/example/marksmangame/net/protocol/**") // Весь протокол
+    include("org/example/marksmangame/model/GameBounds.java") // WA
+
+    // Кладем с сохранением структуры в корень исходников Android
+    into("src/main/java")
 }
 
-// Указываем, что эта задача должна выполняться ДО начала сборки Android
 afterEvaluate {
     tasks.named("preBuild") {
         dependsOn(syncProtocol)
