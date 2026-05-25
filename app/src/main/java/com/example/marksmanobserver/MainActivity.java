@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         model.addObserver(this::updateUI);
 
-        ClientSocket clientSocket = new ClientSocket();
+        ClientSocket clientSocket = BSocket.getSocket();
         clientSocket.connect();
     }
 

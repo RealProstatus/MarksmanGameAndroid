@@ -29,7 +29,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         model.addObserver(this::updateUI);
 
         // Отправляем запрос
-        ClientSocket socket = new ClientSocket();
+        ClientSocket socket = BSocket.getSocket();
         socket.sendReq(new Req(TypeMsg.LEADERBOARD_SPECTATOR_REQUEST));
     }
 
